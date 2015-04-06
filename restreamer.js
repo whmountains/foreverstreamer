@@ -23,6 +23,7 @@ var dog = new Watchout(5000, function() {
 var streamspy = through(function write(data) {
   this.emit('data', data);
   dog.reset();
+  console.log(data[0]);
 });
 
 // connect to the remote stream
