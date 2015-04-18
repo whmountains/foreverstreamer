@@ -8,7 +8,7 @@ var _         = require('lodash');
 var Watchout  = require('watchout');
 
 // URL to a known Icecast stream
-var url = 'http://201.238.215.3:8000';
+var url = process.env.STREM_URL;
 
 //set up the logging
 var header = debug('header');
