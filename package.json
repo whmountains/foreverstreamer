@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node restreamer.js",
+    "start": "forever start restreamer.js",
     "preinstall": "bash deps.sh"
   },
   "author": "",
