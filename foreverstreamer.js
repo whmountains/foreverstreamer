@@ -1,4 +1,3 @@
-var lame      = require('lame');
 var icecast   = require('icecast');
 var Speaker   = require('speaker');
 var debug     = require('debug');
@@ -6,7 +5,9 @@ var streamlog = require('through-logged');
 var through   = require('through');
 var _         = require('lodash');
 var Watchout  = require('watchout');
-var os        = require('os');
+var ffmpeg  = require('fluent-ffmpeg');
+var fs      = require('fs');
+var path    = require('path');
 
 // URL to a known Icecast stream
 var url = process.env.STREAM_URL;
@@ -22,7 +23,7 @@ console.log('process.env.STREAM_URL = ' + url);
 var header = debug('header');
 var meta   = debug('metadata');
 
-var dog = new Watchout(5000, function(haltedTimeout){
+var dog = new Watchout(100000, function(haltedTimeout){
   console.log('dog is barking!');
   process.exit();
 });
@@ -35,19 +36,31 @@ var streamspy = through(function write(data) {
 });
 
 // connect to the remote stream
-icecast.get(url, function (res) {
+icecast.get('http://streaming.nuevotiempo.cl:8080', function (res) {
 
   // log the HTTP response headers
-  header(res.headers);
+  console.log(res.headers);
 
   // log any "metadata" events that happen
   res.on('metadata', function (metadata) {
-    meta(icecast.parse(metadata));
+    console.log(icecast.parse(metadata));
   });
 
-  // Let's play the music (assuming MP3 data).
-  // lame decodes and Speaker sends to speakers!
-  res.pipe(new lame.Decoder())
-     .pipe(streamspy)
-     .pipe(new Speaker());
+  // create the target stream (the system's speakers)
+  var speakers = new Speaker();
+
+  // convert the audio to pcm
+  var proc = ffmpeg(res, {presets: path.resolve('./ffmpeg-presets')})
+    // use the pcm preset
+    .preset('s16le-speaker')
+    // setup event handlers
+    .on('end', function() {
+      console.log('file has been converted succesfully');
+    })
+    .on('error', function(err) {
+      console.log('an error happened: ' + err.message);
+    })
+    // save to stream
+    .pipe(speakers, {end:true}); //end = true, close output stream after writing
+
 });
