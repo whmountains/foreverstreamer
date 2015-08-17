@@ -23,26 +23,21 @@ console.log('process.env.STREAM_URL = ' + url);
 var header = debug('header');
 var meta   = debug('metadata');
 
-var dog = new Watchout(100000, function(haltedTimeout){
-  console.log('dog is barking!');
-  process.exit();
-});
-
-//create a transform function to watch the pcm data
-var streamspy = through(function write(data) {
-  this.emit('data', data);
-  dog.reset();
-});
-
 // connect to the remote stream
 icecast.get('http://streaming.nuevotiempo.cl:8080', function (res) {
 
   // log the HTTP response headers
-  console.log(res.headers);
+  header(res.headers);
 
   // log any "metadata" events that happen
   res.on('metadata', function (metadata) {
-    console.log(icecast.parse(metadata));
+    meta(icecast.parse(metadata));
+  });
+
+  //create a transform function to watch the pcm data to see if we're playing audio
+  var streamspy = through(function write(data) {
+    this.emit('data', data);
+    dog.reset();
   });
 
   // create the target stream (the system's speakers)
@@ -62,7 +57,13 @@ icecast.get('http://streaming.nuevotiempo.cl:8080', function (res) {
     // save to stream
     .pipe(streamspy, {end:true}); //end = true, close output stream after writing
 
-    //pipe from streamspy to the speakers
-    streamspy.pipe(speakers);
+  //pipe from streamspy to the speakers
+  streamspy.pipe(speakers);
+
+  //start watchdog timer
+  var dog = new Watchout(100000, function(haltedTimeout){
+    console.log('dog is barking!');
+    process.exit();
+  });
 
 });
