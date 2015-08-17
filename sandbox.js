@@ -1,12 +1,13 @@
 var _      = require('lodash');
 var ffmpeg = require('fluent-ffmpeg');
 var fs     = require('fs');
+var path   = require('path');
 
 // create the target stream (can be any WritableStream)
 var stream = fs.createWriteStream('./outstream.flv');
 
 // make sure you set the correct path to your video file
-var proc = ffmpeg('./t1.mp3')
+var proc = ffmpeg('./t1.mp3', {presets: path.resolve('./ffmpeg-presets')})
   // use the 'flashvideo' preset (located in /lib/presets/flashvideo.js)
   .preset('flashvideo')
   // setup event handlers
