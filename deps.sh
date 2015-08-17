@@ -13,6 +13,8 @@ echo $PATH
 
 echo "installing npm dependencies"
 
+pwd
 cd app
+pwd
 npm install forever -g
 npm install
