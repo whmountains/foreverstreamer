@@ -11,5 +11,8 @@ apt-get -y install nodejs
 
 echo $PATH
 
+echo "installing npm dependencies"
+
+cd app
 npm install forever -g
 npm install
