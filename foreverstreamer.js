@@ -10,21 +10,21 @@ var fs      = require('fs');
 var path    = require('path');
 
 // URL to a known Icecast stream
-var url = process.env.STREAM_URL;
+var streamURL = process.env.STREAM_URL;
 
-if (!url) {
-  console.log('no stream url!');
-  process.exit();
+if (!streamURL) {
+  console.log('no stream url!  Falling back to default');
+  streamURL = 'http://streaming.nuevotiempo.cl:8080';
 }
 
-console.log('process.env.STREAM_URL = ' + url);
+console.log('trying to stream from ' + streamURL);
 
 //set up the logging
 var header = debug('header');
 var meta   = debug('metadata');
 
 // connect to the remote stream
-icecast.get('http://streaming.nuevotiempo.cl:8080', function (res) {
+icecast.get(streamURL, function (res) {
 
   // log the HTTP response headers
   header(res.headers);
