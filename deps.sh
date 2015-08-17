@@ -21,3 +21,6 @@ apt-get -y install nodejs
 # install node dependencies
 npm install forever -g
 npm install
+
+# clean up
+rm -rf /var/lib/apt/lists/*

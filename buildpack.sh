@@ -39,6 +39,3 @@ apt-get install -y --no-install-recommends \
 	patch \
 	xz-utils \
 	zlib1g-dev
-
-
-rm -rf /var/lib/apt/lists/*
