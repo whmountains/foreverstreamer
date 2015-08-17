@@ -16,7 +16,7 @@
     "icecast": "^1.3.1",
     "lodash": "^3.10.1",
     "request": "^2.55.0",
-    "speaker": "^0.2.4",
+    "speaker": "^0.2.5",
     "through": "^2.3.7",
     "through-logged": "^1.0.0",
     "watchout": "0.0.5"
