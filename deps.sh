@@ -7,7 +7,7 @@ apt-get update
 apt-get install -y alsa-utils libasound2-dev ffmpeg curl
 
 curl -sL https://deb.nodesource.com/setup | sudo bash -
-apt-get install nodejs
+apt-get -y install nodejs
 
 echo $PATH
 
