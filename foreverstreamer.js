@@ -61,7 +61,7 @@ icecast.get('http://streaming.nuevotiempo.cl:8080', function (res) {
   streamspy.pipe(speakers);
 
   //start watchdog timer
-  var dog = new Watchout(100000, function(haltedTimeout){
+  var dog = new Watchout(5000, function(haltedTimeout){
     console.log('dog is barking!');
     process.exit();
   });
