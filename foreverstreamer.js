@@ -32,7 +32,6 @@ var dog = new Watchout(100000, function(haltedTimeout){
 var streamspy = through(function write(data) {
   this.emit('data', data);
   dog.reset();
-  //console.log(data[0]);
 });
 
 // connect to the remote stream
@@ -61,6 +60,9 @@ icecast.get('http://streaming.nuevotiempo.cl:8080', function (res) {
       console.log('an error happened: ' + err.message);
     })
     // save to stream
-    .pipe(speakers, {end:true}); //end = true, close output stream after writing
+    .pipe(streamspy, {end:true}); //end = true, close output stream after writing
+
+    //pipe from streamspy to the speakers
+    streamspy.pipe(speakers);
 
 });
