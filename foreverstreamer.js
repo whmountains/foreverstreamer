@@ -12,13 +12,8 @@ var os        = require('os');
 var url = process.env.STREAM_URL;
 
 if (!url) {
-  if (os.platform() === 'darwin') {
-    url = 'http://201.238.215.3:8000';
-  }
-  else {
-    console.log('no stream url!');
-    process.exit();
-  }
+  console.log('no stream url!');
+  process.exit();
 }
 
 console.log('process.env.STREAM_URL = ' + url);
