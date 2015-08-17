@@ -4,4 +4,4 @@ COPY . /app
 
 RUN app/deps.sh
 
-CMD npm start
+CMD node dummy.js
