@@ -4,17 +4,17 @@ set -o errexit
 set -o pipefail
 
 apt-get update
+
+# install base tools
+./buildpack.sh
+
+# install main dependencies
 apt-get install -y alsa-utils libasound2-dev ffmpeg curl
 
+# install node.js
 curl -sL https://deb.nodesource.com/setup | sudo bash -
 apt-get -y install nodejs
 
-echo $PATH
-
-echo "installing npm dependencies"
-
-pwd
-cd app
-pwd
+# install node dependencies
 npm install forever -g
 npm install
