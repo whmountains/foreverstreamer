@@ -1,7 +1,7 @@
 FROM resin/rpi-raspbian:wheezy-2015-08-12
 
-RUN ./deps.sh
-
 COPY . /app
+
+RUN ./deps.sh
 
 CMD npm start
